@@ -1,2 +1,2 @@
-# analyse_seq-avec-R
+# analyse-seq-avec-R
 Mini-projet analyse de séquence avec R
