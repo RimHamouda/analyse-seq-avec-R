@@ -1,0 +1,59 @@
+
+---
+title: "Analyse de la composition d'une séquence ADN"
+author: "Rim Hamouda"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 📥 Lecture de la séquence ADN
+
+```{r}
+library(Biostrings)
+sequence <- readDNAStringSet("sequence_test.fasta")
+seq <- as.character(sequence[[1]])
+```
+
+## 🧮 Fréquence des bases
+
+```{r}
+nucleotides <- strsplit(seq, "")[[1]]
+frequence <- table(nucleotides)
+freq_nucl <- as.data.frame(frequence)
+colnames(freq_nucl) <- c("Nucleotide", "Frequence")
+freq_nucl
+```
+
+## 📊 Barplot des nucléotides
+
+```{r}
+library(ggplot2)
+ggplot(freq_nucl, aes(x = Nucleotide, y = Frequence, fill = Nucleotide)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  ggtitle("Fréquence des nucléotides dans la séquence")
+```
+
+## 🥧 Diagramme circulaire (pie chart)
+
+```{r}
+pie(freq_nucl$Frequence, 
+    labels = freq_nucl$Nucleotide,
+    main = "Répartition des nucléotides",
+    col = c("gold", "skyblue", "tomato", "palegreen"))
+```
+
+## 💾 Sauvegarde du pie chart dans un fichier PNG
+
+```{r}
+png("piechart_nucleotides.png", width = 600, height = 600)
+pie(freq_nucl$Frequence, 
+    labels = freq_nucl$Nucleotide,
+    main = "Répartition des nucléotides (sauvegardé)",
+    col = c("gold", "skyblue", "tomato", "palegreen"))
+dev.off()
+```
